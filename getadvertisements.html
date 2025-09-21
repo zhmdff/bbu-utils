@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Display</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Blog Posts</h1>
+        <div id="blog-container" class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+fetch("https://localhost:7069/api/advertisements")
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('blog-container');
+        container.innerHTML = '';
+
+        data.forEach(news => {
+            // Build images HTML for this news item
+            let imagesHtml = '';
+            if (news.images && news.images.length > 0) {
+                imagesHtml = '<div class="mb-3">';
+                news.images.forEach(image => {
+                    imagesHtml += `<img src="https://localhost:7069${image.url}" class="img-fluid rounded me-2 mb-2" style="max-width: 100px; max-height: 100px; object-fit: cover;">`;
+                });
+                imagesHtml += '</div>';
+            }
+
+            const newsCard = `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">${news.title}</h5>
+                            ${imagesHtml}
+                            <p class="card-text">${news.body}</p>
+                            <small class="text-muted">
+                                ID: ${news.id}<br>
+                                Created: ${new Date(news.createdAt).toLocaleDateString()}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += newsCard;
+        });
+    })
+    .catch(error => {
+        document.getElementById('blog-container').innerHTML = 
+            '<div class="col-12"><div class="alert alert-danger">Error loading news: ' + error.message + '</div></div>';
+    });
+</script>
+
+</body>
+</html>
