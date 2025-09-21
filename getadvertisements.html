@@ -33,7 +33,7 @@ fetch("https://bbuappservice-hwfvf0fxaufrhme5.westeurope-01.azurewebsites.net/ap
             if (news.images && news.images.length > 0) {
                 imagesHtml = '<div class="mb-3">';
                 news.images.forEach(image => {
-                    imagesHtml += `<img src="https://localhost:7069${image.url}" class="img-fluid rounded me-2 mb-2" style="max-width: 100px; max-height: 100px; object-fit: cover;">`;
+                    imagesHtml += `<img src="https://bbuappservice-hwfvf0fxaufrhme5.westeurope-01.azurewebsites.net${image.url}" class="img-fluid rounded me-2 mb-2" style="max-width: 100px; max-height: 100px; object-fit: cover;">`;
                 });
                 imagesHtml += '</div>';
             }
